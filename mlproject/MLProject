@@ -1,0 +1,7 @@
+name: Eksperimen_Hate_Speech_Ammar_Fernanda_Khoiri
+
+conda_env: conda.yaml
+
+entry_points:
+  main:
+    command: "python modelling.py"
