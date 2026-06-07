@@ -36,10 +36,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install mlflow  
           
-      # Run as a mlflow project
-      - name: Run mlflow project
-        run: |
-          mlflow run MLproject --env-manager=local 
+     # Run as a mlflow project
+    - name: Run mlflow project
+      run: |
+        mlflow run MLproject --env-manager=local --no-git
       
       # Get latest run_id
       - name: Get latest MLflow run_id
@@ -69,10 +69,3 @@ jobs:
       - name: Push Docker Image
         run: |
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/cc:latest
-
-          # Run as a mlflow project
-      - name: Run mlflow project
-        run: |
-          # Flag --no-git sangat penting agar MLflow tidak mencoba 
-          # melakukan operasi Git pada sub-folder Anda
-          mlflow run MLproject --env-manager=local --no-git
