@@ -1,0 +1,2 @@
+docker push 
+ammarfrnd/smsml_ammar_fernanda_khoiri:tagname 
