@@ -23,8 +23,10 @@ jobs:
 
       - name: Run mlflow project
         run: |
-          mlflow run MLproject --env-manager=local --no-git
-
+          # Menghapus folder .git agar mlflow tidak menganggapnya repositori git
+          rm -rf .git
+          mlflow run MLproject --env-manager=local
+          
       - name: Get latest MLflow run_id
         run: |
           RUN_ID=$(ls -td mlruns/0/*/ | head -n 1 | cut -d'/' -f3)
