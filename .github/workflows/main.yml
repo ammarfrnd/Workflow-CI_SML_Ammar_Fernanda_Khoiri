@@ -16,7 +16,6 @@ on:
 
       - main
 
-
 env:
 
   CSV_URL: "MLproject/train_pca.csv"
