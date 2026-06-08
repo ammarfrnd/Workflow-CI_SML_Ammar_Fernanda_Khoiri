@@ -23,12 +23,25 @@ jobs:
 
       - name: Run mlflow project
         run: |
-          # 1. Masuk ke folder mlproject (huruf kecil sesuai struktur Anda)
-          cd mlproject
-          # 2. Hapus metadata Git agar MLflow tidak mencoba melakukan operasi Git
+          # Debug: Tampilkan isi direktori saat ini
+          echo "Isi direktori saat ini:"
+          ls -R
+          
+          # Coba cari lokasi folder mlproject
+          echo "Mencari folder mlproject..."
+          find . -type d -name "mlproject"
+          
+          # Hapus metadata Git
           rm -rf .git
-          # 3. Jalankan MLflow dari dalam folder
-          mlflow run . --env-manager=local
+          
+          # Masuk ke folder mlproject (jika ada) dan jalankan
+          if [ -d "mlproject" ]; then
+            cd mlproject
+            mlflow run . --env-manager=local
+          else
+            echo "Folder mlproject tidak ditemukan!"
+            exit 1
+          fi
       
       - name: Get latest MLflow run_id
         run: |
