@@ -22,7 +22,7 @@ jobs:
           pip install mlflow
 
       - name: Run mlflow project
-        run: |
+        run: 
           # Menghapus folder .git agar mlflow tidak menganggapnya repositori git
           rm -rf .git
           mlflow run MLproject --env-manager=local
