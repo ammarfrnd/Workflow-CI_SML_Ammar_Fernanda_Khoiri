@@ -30,16 +30,17 @@ jobs:
       - name: Check Env
         run: |
           echo $CSV_URL
+
       # Install mlflow
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install mlflow  
           
-     # Run as a mlflow project
-    - name: Run mlflow project
-      run: |
-        mlflow run MLproject --env-manager=local --no-git
+      # Run as a mlflow project
+      - name: Run mlflow project
+        run: |
+          mlflow run MLproject --env-manager=local --no-git
       
       # Get latest run_id
       - name: Get latest MLflow run_id
