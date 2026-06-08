@@ -61,7 +61,7 @@ jobs:
           
 
       - name: Run mlflow project
-    
+     
         run: |
           rm -rf .git
           mlflow run MLproject --env-manager=local
