@@ -1,7 +1,5 @@
 name: CI/CD MLflow
 
-
-
 on:
 
   push:
@@ -61,6 +59,8 @@ jobs:
           
 
       - name: Run mlflow project
+
+
      
         run: |
           rm -rf .git
@@ -100,14 +100,10 @@ jobs:
 
         run:
 
+        
            docker tag cc ${{ secrets.DOCKER_HUB_USERNAME }}/smsml_ammar_fernanda_khoiri:latest
-
-
-
-
-
+           
       - name:    Push Docker Image
-
+      
         run: |
-
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/smsml_ammar_fernanda_khoiri:latest
