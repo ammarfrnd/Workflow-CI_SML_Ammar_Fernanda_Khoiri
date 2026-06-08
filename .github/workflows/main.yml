@@ -59,3 +59,4 @@ jobs:
       - name: Push Docker Image
         run: |
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/smsml_ammar_fernanda_khoiri:latest
+          
