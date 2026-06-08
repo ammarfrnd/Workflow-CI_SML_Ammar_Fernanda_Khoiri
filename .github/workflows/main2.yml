@@ -23,9 +23,8 @@ jobs:
 
       - name: Run mlflow project
         run: |
-          # Hapus folder .git agar mlflow tidak mendeteksi sebagai git repo
-          rm -rf .git
-          mlflow run MLproject --env-manager=local
+          cd MLproject
+          GIT_PYTHON_REFRESH=quiet mlflow run. --env-manager=local
       
       - name: Get latest MLflow run_id
         run: |
