@@ -50,10 +50,10 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: Tag Docker Image
-     run:
-        docker tag cc ${{ secrets.DOCKER_HUB_USERNAME }}/smsml_ammar_fernanda_khoiri:latest
+        run:
+          docker tag cc ${{ secrets.DOCKER_HUB_USERNAME }}/smsml_ammar_fernanda_khoiri:latest
 
 
--name: push Docker Image
-    run:
-        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/smsml_ammar_fernanda_khoiri:latest
+      - name:  push Docker Image
+        run:
+         docker push ${{ secrets.DOCKER_HUB_USERNAME }}/smsml_ammar_fernanda_khoiri:latest
