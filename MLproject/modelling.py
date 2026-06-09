@@ -63,3 +63,4 @@ print("Selesai!")
 run_id = mlflow.active_run().info.run_id
 with open(os.path.join(os.getcwd(), "run_id.txt"), "w") as f:
     f.write(run_id)
+print(f"Run ID {run_id} berhasil disimpan ke run_id.txt")
