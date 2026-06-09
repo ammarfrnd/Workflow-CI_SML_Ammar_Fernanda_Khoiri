@@ -44,5 +44,8 @@ jobs:
 
       - name: Tag and Push Docker Image
         run: |
-          docker tag cc ammarfrnd/smsml_ammar_fernanda_khoiri: latest
-          docker push ammarfrnd/smsml_ammar_fernanda_khoiri: latest
+          # 1. Tag image 'cc' (hasil build MLflow) dengan nama repositori Anda
+          docker tag cc ammarfrnd/smsml_ammar_fernanda_khoiri:latest
+          
+          # 2. Push image tersebut
+          docker push ammarfrnd/smsml_ammar_fernanda_khoiri:latest
