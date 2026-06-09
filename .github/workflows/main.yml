@@ -23,12 +23,12 @@ jobs:
 
       - name: Run MLflow Project
         run: |
-          # 1. Cari file bernama "MLproject" (M & P kapital!)
+          # 1. Cari file bernama "MLProject" (M & P kapital!)
           # Kita mencari file, lalu mengambil foldernya (dirname)
           PROJECT_FILE=$(find . -type f -name "MLproject" | head -n 1)
           
           if [ -z "$PROJECT_FILE" ]; then
-            echo "Error: File 'MLproject' TIDAK ditemukan di repositori!"
+            echo "Error: File 'MLProject' TIDAK ditemukan di repositori!"
             echo "Daftar isi folder saat ini:"
             ls -R
             exit 1
