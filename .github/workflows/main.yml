@@ -23,20 +23,27 @@ jobs:
 
       - name: Run MLflow Project
         run: |
-          # Cari folder yang mengandung file "MLproject"
-          PROJECT_DIR=$(find . -type f -name "MLproject" -exec dirname {} \; | head -n 1)
+          # 1. Cari file bernama "MLproject" (M & P kapital!)
+          # Kita mencari file, lalu mengambil foldernya (dirname)
+          PROJECT_FILE=$(find . -type f -name "MLproject" | head -n 1)
           
-          if [ -z "$PROJECT_DIR" ]; then
-            echo "Error: File 'MLproject' tidak ditemukan!"
+          if [ -z "$PROJECT_FILE" ]; then
+            echo "Error: File 'MLproject' TIDAK ditemukan di repositori!"
+            echo "Daftar isi folder saat ini:"
+            ls -R
             exit 1
           fi
           
-          echo "Menjalankan proyek di: $PROJECT_DIR"
-          # Eksekusi dengan environment lokal agar tidak mencari conda.yaml
+          PROJECT_DIR=$(dirname "$PROJECT_FILE")
+          echo "File ditemukan di: $PROJECT_FILE"
+          echo "Menjalankan proyek dari folder: $PROJECT_DIR"
+          
+          # 2. Jalankan MLflow
           mlflow run "$PROJECT_DIR" --env-manager=local
-      
+
       - name: Get latest MLflow run_id
         run: |
+          # Cari ID run terakhir di folder mlruns
           RUN_ID=$(ls -td mlruns/0/*/ | head -n 1 | cut -d'/' -f3)
           echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
           
