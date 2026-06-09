@@ -45,14 +45,19 @@ jobs:
 
       - name: Run MLflow Project
         run: |
-          # Cari folder yang mengandung file MLproject
-          FOLDER_PATH=$(find . -type f -name "MLproject" -exec dirname {} \; | head -n 1)
+          # Cari lokasi direktori yang mengandung file 'MLproject'
+          # Pastikan file Anda bernama "MLproject" (M dan P kapital)
+          PROJECT_DIR=$(find . -type f -name "MLproject" -exec dirname {} \; | head -n 1)
           
-          echo "Menjalankan dari: $FOLDER_PATH"
+          if [ -z "$PROJECT_DIR" ]; then
+            echo "Error: File 'MLproject' tidak ditemukan di repositori!"
+            exit 1
+          fi
           
-          # Gunakan --env-manager=local untuk memaksa MLflow memakai 
-          # environment yang sudah di-setup oleh langkah 'Install dependencies' di atas
-          mlflow run "$FOLDER_PATH" --env-manager=local
+          echo "Menjalankan MLflow project dari direktori: $PROJECT_DIR"
+          
+          # Jalankan MLflow menggunakan environment yang sudah ada di runner
+          mlflow run "$PROJECT_DIR" --env-manager=local
      
 
           
