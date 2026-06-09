@@ -21,12 +21,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install mlflow
 
-      - name: Run mlflow project
+      - name: Run MLflow Project
         run: |
-          # 1. Tampilkan struktur folder untuk menemukan posisi 'mlproject'
-          echo "Daftar semua folder/file:"
-          ls -R
-          
+          mlflow run ./Workflow-CI/MLProject --env-manager=local
+           
           # 2. Cari lokasi folder secara otomatis
           FOLDER_PATH=$(find . -type d -name "mlproject" | head -n 1)
           
