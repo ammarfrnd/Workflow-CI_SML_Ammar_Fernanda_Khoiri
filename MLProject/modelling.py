@@ -14,7 +14,7 @@ import mlflow.tensorflow
 
 # 1. KONFIGURASI MLFLOW (Paling atas)
 mlflow.set_tracking_uri("sqlite:///mlflow_data.db")
-("Eksperimen_Hate_Speech_Ammar_Fernanda_Khoiri")
+
 
 # Autologging mencatat metrik training otomatis
 mlflow.tensorflow.autolog()
