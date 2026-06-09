@@ -21,11 +21,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install mlflow tensorflow scikit-learn
 
-      - name: Run MLflow Project
+      - name: Run MLProject
         run: |
-          # 1. Cari file bernama "MLProject" (M & P kapital!)
-          # Kita mencari file, lalu mengambil foldernya (dirname)
-          PROJECT_FILE=$(find . -type f -name "MLproject" | head -n 1)
+          mlflow run . --env-manager=local
           
           if [ -z "$PROJECT_FILE" ]; then
             echo "Error: File 'MLProject' TIDAK ditemukan di repositori!"
