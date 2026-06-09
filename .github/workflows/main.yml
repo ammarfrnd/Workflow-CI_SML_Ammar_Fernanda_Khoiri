@@ -24,15 +24,18 @@ jobs:
       # LANGKAH CRITICAL: Menjalankan folder, bukan file.
       # Pastikan folder 'MLproject' ada di root repository Anda.
       
+      # Perbaikan: Menggunakan nama eksperimen yang benar dan menyimpan log
       - name: Run MLflow Project
         run: |
-          echo "Menjalankan proyek dari folder MLProject..."
-          mlflow run MLproject --env-manager=local
+          echo "Menjalankan proyek untuk eksperimen: Eksperimen_Hate_Speech_Ammar_Fernanda_Khoiri"
+          mlflow run . --env-manager=local --experiment-name "Eksperimen_Hate_Speech_Ammar_Fernanda_Khoiri" > output.log 2>&1
+          cat output.log
         
+      # Perbaikan: Ekstraksi ID yang lebih akurat
       - name: Extract Run ID
         run: |
-          # Mencari baris yang mengandung tag MLFLOW_RUN_ID:
-          RUN_ID=$(grep -oP 'MLFLOW_RUN_ID:\K[a-zA-Z0-9]+' output.log | tail -n 1)
+          # Mencari ID run secara eksplisit dari log MLflow
+          RUN_ID=$(grep -oP '(?<=Run with ID \')[a-f0-9]+' output.log | tail -n 1)
           
           if [ -z "$RUN_ID" ]; then
             echo "Error: Run ID tidak ditemukan di log!"
@@ -40,12 +43,12 @@ jobs:
           fi
           
           echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
-          echo "Run ID berhasil ditangkap: $RUN_ID"
+          echo "Run ID berhasil ditemukan dan disimpan: $RUN_ID"
 
       - name: Build Docker Model
         run: |
           # Menggunakan variabel env yang sudah pasti terisi
-          mlflow models build-docker --model-uri "runs:/${{env.RUN_ID}}/model" --name "cc"
+          mlflow models build-docker --model-uri "runs:/$RUN_ID/model" --name "cc"
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
