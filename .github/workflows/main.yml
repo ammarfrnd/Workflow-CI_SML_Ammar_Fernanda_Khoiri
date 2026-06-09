@@ -45,16 +45,16 @@ jobs:
 
       - name: Run MLflow Project
         run: |
-          # Cari lokasi direktori yang mengandung file 'MLproject'
-          # Pastikan file Anda bernama "MLproject" (M dan P kapital)
-          PROJECT_DIR=$(find . -type f -name "MLproject" -exec dirname {} \; | head -n 1)
+          # Cari lokasi direktori yang mengandung file 'MLProject'
+          # Pastikan file Anda bernama "MLProject" (M dan P kapital)
+          PROJECT_DIR=$(find . -type f -name "MLProject" -exec dirname {} \; | head -n 1)
           
           if [ -z "$PROJECT_DIR" ]; then
-            echo "Error: File 'MLproject' tidak ditemukan di repositori!"
+            echo "Error: File 'MLProject' tidak ditemukan di repositori!"
             exit 1
           fi
           
-          echo "Menjalankan MLflow project dari direktori: $PROJECT_DIR"
+          echo "Menjalankan MLflow Project dari direktori: $PROJECT_DIR"
           
           # Jalankan MLflow menggunakan environment yang sudah ada di runner
           mlflow run "$PROJECT_DIR" --env-manager=local
