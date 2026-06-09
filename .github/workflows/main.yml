@@ -39,12 +39,12 @@ jobs:
           echo "RUN_ID berhasil didapatkan: $RUN_ID"
           
       - name: Build Docker Model
-        continue-on-error: false  # Ubah ke true jika ingin pipeline lanjut meski gagal di langkah ini
         run: |
-          if [ -z "$RUN_ID" ]; then
-            echo "Error: RUN_ID tidak ditemukan!"
-            exit 1
-          fi
+          # Membaca ID dari file yang dibuat skrip Python
+          RUN_ID=$(cat run_id.txt)
+          echo "Building Docker for RUN_ID: $RUN_ID"
+          
+          # Membangun Docker Image
           mlflow models build-docker --model-uri "runs:/$RUN_ID/model" --name "cc"
 
       - name: Log in to Docker Hub
