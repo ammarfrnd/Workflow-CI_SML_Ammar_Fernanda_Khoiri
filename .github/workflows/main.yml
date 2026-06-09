@@ -21,25 +21,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install mlflow tensorflow scikit-learn
 
+      # LANGKAH CRITICAL: Menjalankan folder, bukan file.
+      # Pastikan folder 'MLproject' ada di root repository Anda.
       - name: Run MLflow Project
         run: |
-          # Ganti 'nama_folder_anda' dengan nama folder yang benar-benar berisi file MLproject
-          # Contoh jika file MLproject ada di dalam folder 'MLProject':
-          mlflow run ./MLProject --env-manager=local
-
-      - name: Debug Folder Structure
-        run: |
-           echo "Isi direktori saat ini:"
-           ls -R
+          echo "Menjalankan proyek dari folder MLProject..."
+          mlflow run MLproject --env-manager=local
         
       - name: Get latest MLflow run_id
         run: |
-          # Mencari direktori eksperimen terbaru
-          # Menggunakan path yang benar untuk mengakses mlruns
-          LATEST_RUN_DIR=$(ls -td mlruns/0/*/ | head -n 1)
-          RUN_ID=$(basename "$LATEST_RUN_DIR")
+          # Mengambil folder run terbaru dari mlruns/0/
+          RUN_ID=$(ls -td mlruns/0/*/ | head -n 1 | xargs basename)
           echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
-          echo "Found RUN_ID: $RUN_ID"
           
       - name: Build Docker Model
         run: mlflow models build-docker --model-uri "runs:/${{ env.RUN_ID }}/model" --name "cc"
@@ -48,6 +41,12 @@ jobs:
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Tag and Push Docker Image
+        run: |
+          docker tag cc ${{ secrets.DOCKER_HUB_USERNAME }}/smsml_ammar_fernanda_khoiri:latest
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/smsml_ammar_fernanda_khoiri:latest
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: Tag and Push Docker Image
