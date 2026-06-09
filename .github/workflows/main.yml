@@ -44,5 +44,5 @@ jobs:
 
       - name: Tag and Push Docker Image
         run: |
-          docker tag cc ${{secrets.DOCKER_HUB_USERNAME}}/smsml_ammar_fernanda_khoiri:latest
-          docker push ${{secrets.DOCKER_HUB_USERNAME}}/smsml_ammar_fernanda_khoiri:latest
+          docker tag cc ammarfrnd/smsml_ammar_fernanda_khoiri: latest
+          docker push ammarfrnd/smsml_ammar_fernanda_khoiri: latest
