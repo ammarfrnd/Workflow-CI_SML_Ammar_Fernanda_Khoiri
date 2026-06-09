@@ -18,8 +18,8 @@ jobs:
       
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install mlflow tensorflow scikit-learn
+         python -m pip install --upgrade pip
+         pip install -r requirements.txt
 
       # LANGKAH CRITICAL: Menjalankan folder, bukan file.
       # Pastikan folder 'MLproject' ada di root repository Anda.
