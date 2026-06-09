@@ -22,11 +22,15 @@ jobs:
           pip install mlflow tensorflow scikit-learn
 
       - name: Run MLflow Project
-        # Kita gunakan perintah langsung ke folder root atau folder spesifik.
-        # Jika file 'MLproject' ada di root, gunakan '.', jika di dalam folder 'MLProject', gunakan './MLProject'
         run: |
-          echo "Menjalankan MLflow project..."
-          mlflow run . --env-manager=local
+          # Ganti 'nama_folder_anda' dengan nama folder yang benar-benar berisi file MLproject
+          # Contoh jika file MLproject ada di dalam folder 'MLProject':
+          mlflow run ./MLProject --env-manager=local
+
+      - name: Debug Folder Structure
+        run: |
+           echo "Isi direktori saat ini:"
+           ls -R
         
       - name: Get latest MLflow run_id
         run: |
