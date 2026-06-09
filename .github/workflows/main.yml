@@ -41,11 +41,3 @@ jobs:
         with:
           username: ${{secrets.DOCKER_HUB_USERNAME}}
           password: ${{secrets.DOCKER_HUB_ACCESS_TOKEN}}
-
-      - name: Tag and Push Docker Image
-        run: |
-          # 1. Tag image 'cc' (hasil build MLflow) dengan nama repositori Anda
-          docker tag cc ammarfrnd/smsml_ammar_fernanda_khoiri:tagname
-          
-          # 2. Push image tersebut
-          docker push ammarfrnd/smsml_ammar_fernanda_khoiri:tagname
