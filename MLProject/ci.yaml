@@ -1,26 +1,20 @@
-name: Continuous Integration Re-training
-
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  mlflow-run:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Unduh Source Code
-      uses: actions/checkout@v3
-
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-
-    - name: Install Dependensi
-      run: |
-        pip install mlflow tensorflow pandas numpy scikit-learn
-
-    - name: Eksekusi Otomatis MLProject
-      run: |
-        mlflow run . --env-manager=local
+- name: Run MLflow Project
+        run: |
+          # Cari file bernama "MLproject" di mana pun di dalam repositori
+          # Ini akan menemukan lokasi folder yang benar secara otomatis
+          PROJECT_FILE=$(find . -type f -name "MLproject" | head -n 1)
+          
+          if [ -z "$PROJECT_FILE" ]; then
+            echo "Error: File 'MLproject' tidak ditemukan!"
+            # Debug: cetak isi direktori untuk melihat di mana file sebenarnya
+            ls -R
+            exit 1
+          fi
+          
+          # Ambil folder tempat file MLproject berada
+          PROJECT_DIR=$(dirname "$PROJECT_FILE")
+          
+          echo "Menjalankan MLflow Project dari direktori: $PROJECT_DIR"
+          
+          # Jalankan
+          mlflow run "$PROJECT_DIR" --env-manager=local
