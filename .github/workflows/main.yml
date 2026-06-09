@@ -43,9 +43,13 @@ jobs:
 
       - name: Run MLflow Project
         run: |
-          # Cari lokasi direktori yang mengandung file 'MLProject'
-          # Pastikan file Anda bernama "MLProject" (M dan P kapital)
-          PROJECT_DIR=$(find . -type f -name "MLProject" -exec dirname {} \; | head -n 1)
+          # Cari folder yang mengandung file MLproject
+          FOLDER_PATH=$(find . -type d -name "MLProject" | head -n 1)
+          
+          echo "Folder ditemukan di: $FOLDER_PATH"
+          
+          # Gunakan --env-manager=local agar tidak mencari conda.yaml
+          mlflow run "$FOLDER_PATH" --env-manager=local
           
           if [ -z "$PROJECT_DIR" ]; then
             echo "Error: File 'MLProject' tidak ditemukan di repositori!"
