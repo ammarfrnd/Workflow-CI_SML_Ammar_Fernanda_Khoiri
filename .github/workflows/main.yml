@@ -35,12 +35,10 @@ jobs:
       
 
       - name: Install dependencies
-
         run: |
-
           python -m pip install --upgrade pip
-
-          pip install mlflow
+          # Tambahkan tensorflow di sini
+          pip install mlflow tensorflow scikit-learn
 
 
       - name: Run MLflow Project
@@ -64,13 +62,13 @@ jobs:
 
           # 2. Cari lokasi folder secara otomatis
 
-          FOLDER_PATH=$(find . -type d -name "mlproject" | head -n 1)
+          FOLDER_PATH=$(find . -type d -name "MLProject" | head -n 1)
 
           
 
           if [ -z "$FOLDER_PATH" ]; then
 
-            echo "Error: Folder 'mlproject' tidak ditemukan di mana pun!"
+            echo "Error: Folder 'MLProject' tidak ditemukan di mana pun!"
 
             exit 1
 
