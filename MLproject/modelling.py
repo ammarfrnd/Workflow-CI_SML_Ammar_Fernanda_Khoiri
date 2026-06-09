@@ -58,3 +58,8 @@ mlflow.log_param("max_words", MAX_WORDS)
 mlflow.log_param("max_len", MAX_LEN)
 
 print("Selesai!")
+
+# 2. Ambil ID run yang sedang berjalan dan simpan di root workspace
+run_id = mlflow.active_run().info.run_id
+with open(os.path.join(os.getcwd(), "run_id.txt"), "w") as f:
+    f.write(run_id)
