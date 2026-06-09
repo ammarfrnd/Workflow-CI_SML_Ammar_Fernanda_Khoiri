@@ -40,24 +40,19 @@ jobs:
           
       - name: Build Docker Model
         run: |
-          # 1. Pastikan file run_id.txt ada
-          if [ -f "run_id.txt" ]; then
-            RUN_ID=$(cat run_id.txt)
-            echo "RUN_ID yang dibaca adalah: $RUN_ID"
-            
-            # 2. Pastikan RUN_ID tidak kosong
-            if [ -n "$RUN_ID" ]; then
-              mlflow models build-docker --model-uri "runs:/$RUN_ID/model" --name "cc"
-            else
-              echo "Error: File run_id.txt kosong!"
-              exit 1
-            fi
-          else
-            echo "Error: File run_id.txt tidak ditemukan di root!"
-            # Debugging: tampilkan isi folder saat ini
-            ls -R
+          # Ambil RUN_ID terakhir dari log
+          # Mencari pola ID setelah "Run with ID '"
+          RUN_ID=$(grep -oP "(?<=Run with ID ')[a-z0-9]+" mlflow.log | tail -n 1)
+          
+          echo "RUN_ID yang ditemukan: $RUN_ID"
+          
+          if [ -z "$RUN_ID" ]; then
+            echo "Error: RUN_ID tidak ditemukan!"
             exit 1
           fi
+          
+          # Build Docker menggunakan ID yang valid
+          mlflow models build-docker --model-uri "runs:/$RUN_ID/model" --name "cc"
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
