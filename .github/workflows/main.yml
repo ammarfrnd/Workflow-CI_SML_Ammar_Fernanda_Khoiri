@@ -35,21 +35,6 @@ jobs:
           RUN_ID=$(basename "$LATEST_RUN")
           # Menyimpan ke environment variable tanpa spasi tambahan
           echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
-          
-      - name: Build Docker Model
-        run: |
-          # Ekstrak run_id dari log
-          RUN_ID=$(grep -oP 'MLfLow_run_id:\K[a-zA-Z0-9]+' output.log | tail -n 1)
-          
-          if [ -z "run_id" ]; then
-            echo "Error: run id tidak ditemukan di log!"
-            exit 1
-          fi
-          
-          echo "run id berhasil ditemukan: run_id"
-          
-          # Build Docker menggunakan id yang valid
-          mlflow models build-docker --model-uri "runs:/run_id/model" --name "cc"
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
