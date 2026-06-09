@@ -2,8 +2,7 @@ name: CI/CD MLflow
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   build:
@@ -11,44 +10,35 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up Python 3.12.7
+      - name: Set up Python 3.12
         uses: actions/setup-python@v4
         with:
-          python-version: "3.12.7"
+          python-version: "3.12"
       
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
+          pip install --upgrade pip
+          # Menambahkan tensorboard untuk mencegah TBNotInstalledError
           pip install mlflow tensorflow scikit-learn tensorboard pandas numpy
-
-      # LANGKAH CRITICAL: Menjalankan folder, bukan file.
-      # Pastikan folder 'MLproject' ada di root repository Anda.
-      
-      # Perbaikan: Menggunakan nama eksperimen yang benar dan menyimpan log
+          
       - name: Run MLflow Project
+        id: training
         run: |
-          echo "Menjalankan proyek untuk eksperimen: Eksperimen_Hate_Speech_Ammar_Fernanda_Khoiri"
-          mlflow run . --env-manager=local --experiment-name "Eksperimen_Hate_Speech_Ammar_Fernanda_Khoiri" > output.log 2>&1
-          cat output.log
-        
-      # Perbaikan: Ekstraksi ID yang lebih akurat
-      - name: Extract Run ID
-        run: |
-          # Mencari ID run secara eksplisit dari log MLflow
-          RUN_ID=$(grep -oP '(?<=Run with ID \')[a-f0-9]+' output.log | tail -n 1)
+          # Menjalankan project dan menyimpan output ke log
+          mlflow run. --env-manager=local 
           
-          if [ -z "$RUN_ID" ]; then
-            echo "Error: Run ID tidak ditemukan di log!"
-            exit 1
-          fi
-          
+          # Mengekstrak RUN_ID dari log
+          RUN_ID=$(grep -oP 'MLFLOW_RUN_ID:\K[a-zA-Z0-9]+' output.log | tail -n 1)
           echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
-          echo "Run ID berhasil ditemukan dan disimpan: $RUN_ID"
-
+          echo "Run ID berhasil ditemukan: $RUN_ID"
+        
       - name: Build Docker Model
         run: |
-          # Menggunakan variabel env yang sudah pasti terisi
-          mlflow models build-docker --model-uri "runs:/$RUN_ID/model" --name "cc"
+          if [ -z "${{ env.RUN_ID }}" ]; then
+            echo "Error: RUN_ID tidak ditemukan!"
+            exit 1
+          fi
+          mlflow models build-docker --model-uri "runs:/${{ env.RUN_ID }}/model" --name "cc"
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
