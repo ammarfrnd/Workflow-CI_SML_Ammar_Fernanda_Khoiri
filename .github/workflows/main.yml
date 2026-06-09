@@ -43,7 +43,16 @@ jobs:
           pip install mlflow
 
 
-
+      - name: Run MLflow Project
+        run: |
+          # Cari folder yang mengandung file MLproject
+          FOLDER_PATH=$(find . -type f -name "MLproject" -exec dirname {} \; | head -n 1)
+          
+          echo "Menjalankan dari: $FOLDER_PATH"
+          
+          # Gunakan --env-manager=local untuk memaksa MLflow memakai 
+          # environment yang sudah di-setup oleh langkah 'Install dependencies' di atas
+          mlflow run "$FOLDER_PATH" --env-manager=local
      
 
           
