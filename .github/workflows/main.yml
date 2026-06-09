@@ -23,27 +23,24 @@ jobs:
 
       - name: Run MLflow Project
         run: |
-          mlflow run ./Workflow-CI/MLProject --env-manager=local
-           
-          # 2. Cari lokasi folder secara otomatis
-          FOLDER_PATH=$(find . -type d -name "mlproject" | head -n 1)
+          # Cari lokasi folder project secara otomatis
+          # Kita mencari folder yang mengandung file MLproject
+          FOLDER_PATH=$(find . -type f -name "MLproject" -exec dirname {} \; | head -n 1)
           
           if [ -z "$FOLDER_PATH" ]; then
-            echo "Error: Folder 'mlproject' tidak ditemukan di mana pun!"
+            echo "Error: File 'MLproject' tidak ditemukan!"
             exit 1
           fi
           
-          echo "Folder ditemukan di: $FOLDER_PATH"
-          
-          # 3. Masuk ke folder, hapus .git, dan jalankan
-          cd "$FOLDER_PATH"
-          rm -rf .git
-          mlflow run . --env-manager=local
+          echo "Menjalankan proyek di: $FOLDER_PATH"
+          mlflow run "$FOLDER_PATH" --env-manager=local
       
       - name: Get latest MLflow run_id
         run: |
-          # Mencari ID run terakhir di folder mlruns
+          # Mengambil direktori run terakhir (berdasarkan waktu modifikasi)
+          # Asumsi: mlruns/0/ adalah default path untuk eksperimen 0
           RUN_ID=$(ls -td mlruns/0/*/ | head -n 1 | cut -d'/' -f3)
+          echo "RUN_ID=$RUN_ID"
           echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
           
       - name: Build Docker Model
